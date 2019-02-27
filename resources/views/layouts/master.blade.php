@@ -55,7 +55,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{asset('img/user.png')}}" class="img-circle elevation-2" alt="{{Auth::user()->name}}">
+          <img src="{{Auth::user()->photo}}" class="img-circle elevation-2" alt="{{Auth::user()->name}}">
         </div>
         <div class="info">
           <a href="#" class="d-block">{{Auth::user()->name}}</a>
@@ -78,18 +78,13 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Active Page</p>
+              <router-link to="/users" tag="li" active-class="active" exact>
+                <a class="nav-link">
+                  <i class="fas fa-users nav-icon"></i>
+                  Users
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="fa fa-circle-o nav-icon"></i>
-                  <p>Inactive Page</p>
-                </a>
-              </li>
+              </router-link>
+              
             </ul>
           </li>
           <router-link to="/profile" tag="li" class="nav-item" active-class="active" exact><a class="nav-link"><i class="nav-icon fas fa-user"></i> Profile</a></router-link>
