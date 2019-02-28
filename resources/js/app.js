@@ -7,7 +7,11 @@
 
 require('./bootstrap');
 import VueRouter from 'vue-router';
-import {routes} from "./routes.js"
+import {routes} from "./routes.js";
+import { Form, HasError, AlertError } from 'vform';
+window.Form=Form;
+
+
 window.Vue = require('vue');
 Vue.use(VueRouter);
 
@@ -16,6 +20,10 @@ const router = new VueRouter({
 	mode:'history',
 	
 });
+Vue.component(HasError.name, HasError);
+Vue.component(AlertError.name, AlertError);
+
+
 
 /**
  * The following block of code may be used to automatically register your
