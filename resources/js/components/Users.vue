@@ -2,6 +2,7 @@
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="card card-default col-12">
+                <link rel="stylesheet" href="">
                 <div class="card-header">
                     <h3 class="card-title">Users</h3>
                     <div class="card-tools">
@@ -12,18 +13,28 @@
                     <table class="table table-stripped">
                         <thead>
                             <th>id</th>
+                            <th>photo</th>
                             <th>name</th>
                             <th>email</th>
                             <th>type</th>
+                            <th>registed at</th>
                             <th>Actions</th>
                         </thead>
                         <tbody>
                             <tr v-for="u in users">
                                 <td>{{u.id}}</td>
-                                <td>{{u.name}}</td>
+                                <td><img :src="u.photo" alt="" class="img"></td>
+                                <td>{{u.name | UCfirst}}</td>
                                 <td>{{u.email}}</td>
-                                <td>{{u.type}}</td>
-                                <td><a href="#" class="btn btn-sm btn-warning mr-2" title="Edit"><i class="fa fa-edit"></i></a><a href="#" class="btn btn-sm btn-danger" title="delete"><i class="fa fa-trash" ></i></a></td>
+                                <td>{{u.type | UCfirst}}</td>
+                                <td>{{u.created_at | myDate}}</td>
+                                <td><a href="javascript:void(0)" class="btn btn-sm btn-warning mr-2" title="Edit">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" class="btn btn-sm btn-danger" @click="deleteUser(u.id)" title="delete">
+                                        <i class="fa fa-trash" ></i>
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -99,22 +110,64 @@
                     bio:'',
                     photo:''
                 }),
-                users:[]
+                users:[],
             };
         },
         methods:{
             createUser(){
-                axios.post('/api/users',this.form);
+                axios.post('/api/users',this.form).then(()=>{
+                    $("#newUser").modal('hide');
+                    Toast.fire({
+                      type: 'success',
+                      title: 'Signed in successfully'
+                    });
+                    this.$router.push('/users');
+                }).catch((err)=>{
+                    Toast.fire({
+                      type: 'error',
+                      title: 'error'
+                    });
+                    this.$router.push('/dashboard');
+
+                });
 
             },
-            getUsers(){
-                axios.get('api/users').then((resp)=>{console.log(resp.data.users);});
+            deleteUser(id){
+                Swal.fire({
+                  title: 'Are you sure?',
+                  text: "You won't be able to revert this!",
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                  if (result.value) {
+                    axios.delete(`api/users/${id}`).then(()=>{
+                        Toast.fire({
+                          type: 'success',
+                          title: "User Deleted successfully"
+                        })
+                    }).catch((err)=>{
+                        Toast.fire({
+                          type: 'error',
+                          title: "something went wrong! user was not deleted"
+                        })
+
+                    });
+                  }
+                });
+                
             }
         },
-        mounted() {
-            console.log('Component mounted.');
-                            axios.get('api/users').then((resp)=>{this.users=resp.data.users;});
-
+        created() {
+            this.$Progress.start()
+            axios.get('api/users').then((resp)=>{this.users=resp.data.users.data;});
+          axios.get('api/users').then((resp)=>{console.log(resp.data.users);});
+        },
+        mounted(){
+                this.$Progress.finish();
+                
         }
     }
 </script>

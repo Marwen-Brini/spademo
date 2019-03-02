@@ -67,6 +67,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+
                <router-link class="nav-item" tag="li" to="/dashboard" active-class="active" exact ><a class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i> Dashboard</a></router-link>
           
           <li class="nav-item has-treeview">
@@ -113,6 +114,8 @@
     <div class="content">
       <div class="container-fluid">
         <router-view></router-view>
+                <vue-progress-bar></vue-progress-bar>
+
       </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
