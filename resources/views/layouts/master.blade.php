@@ -68,7 +68,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-               <router-link class="nav-item" tag="li" to="/dashboard" active-class="active" exact ><a class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i> Dashboard</a></router-link>
+          <router-link class="nav-item" tag="li" to="/dashboard" active-class="active" exact ><a class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i> Dashboard</a></router-link>
           
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -89,6 +89,7 @@
             </ul>
           </li>
           <router-link to="/profile" tag="li" class="nav-item" active-class="active" exact><a class="nav-link"><i class="nav-icon fas fa-user"></i> Profile</a></router-link>
+          <router-link to="/Developer" tag="li" class="nav-item" active-class="active" exact><a class="nav-link"><i class="nav-icon fas fa-cogs"></i> Developer</a></router-link>
           
           <li class="nav-item">
             <a href="#" class="nav-link">

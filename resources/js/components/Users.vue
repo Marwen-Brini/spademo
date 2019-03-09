@@ -6,7 +6,7 @@
                 <div class="card-header">
                     <h3 class="card-title">Users</h3>
                     <div class="card-tools">
-                        <button data-toggle="modal" data-target="#newUser" class="btn btn-success" title="create new User"><i class="fas fa-user-plus"></i></button>
+                        <button type="button" @click="newPopup" class="btn btn-success" title="create new User"><i class="fas fa-user-plus"></i></button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -28,7 +28,7 @@
                                 <td>{{u.email}}</td>
                                 <td>{{u.type | UCfirst}}</td>
                                 <td>{{u.created_at | myDate}}</td>
-                                <td><a href="javascript:void(0)" class="btn btn-sm btn-warning mr-2" title="Edit">
+                                <td><a href="javascript:void(0)" @click="editUser(u.id)" class="btn btn-sm btn-warning mr-2" title="Edit">
                                         <i class="fa fa-edit"></i>
                                     </a>
                                     <a href="javascript:void(0)" class="btn btn-sm btn-danger" @click="deleteUser(u.id)" title="delete">
@@ -46,12 +46,12 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="newUserLabel">Add New</h5>
+        <h5 class="modal-title" id="newUserLabel">{{editMode?'Edit User':'Add New User'}}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-        <form @submit.prevent="createUser">
+        <form @submit.prevent="editMode?updateUser():createUser()">
       <div class="modal-body">
             <div class="form-group">
               <input v-model="form.name" type="text" name="name"
@@ -89,7 +89,7 @@
       </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><strong>Cancel</strong></button>
-            <button type="submit" class="btn btn-primary btn-sm"><strong>Save User</strong></button>
+            <button type="submit" class="btn btn-primary btn-sm"><strong>{{editMode?'Update User':'Save User'}}</strong></button>
           </div>
         </form>
     </div>
@@ -103,6 +103,7 @@
         data(){
             return {
                 form: new Form({
+                    id:'',
                     name:'',
                     email:'',
                     password:'',
@@ -111,9 +112,34 @@
                     photo:''
                 }),
                 users:[],
+                editMode:false
             };
         },
         methods:{
+          editUser(id){
+            this.editMode=true;
+            axios.get(`api/users/${id}`).then((res)=>{
+              this.form.fill(res.data);
+              $("#newUser").modal('show');
+              
+            }).catch((err)=>console.log(err));
+
+          },
+          updateUser(){
+
+            axios.put(`api/users/${this.form.id}`,this.form,{ headers: {'Content-Type': 'application/json'} }).then((res)=>{
+              $("#newUser").modal('hide');
+              Toast.fire({
+                type: 'success',
+                title: 'Updated User successfully'
+              });
+            }).catch((err)=>console.log(err));
+          },
+            newPopup(){
+              this.editMode=false;
+              this.form.reset();
+              $("#newUser").modal('show');
+            },
             createUser(){
                 axios.post('/api/users',this.form).then(()=>{
                     $("#newUser").modal('hide');

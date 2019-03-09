@@ -54,7 +54,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return User::findOrFail($id);
     }
 
     /**
@@ -66,7 +66,12 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->name=$request->name;
+        $user->email=$request->email;
+        $user->bio=$request->bio;
+        $user->type=$request->type;
+        $user->save();
     }
 
     /**
