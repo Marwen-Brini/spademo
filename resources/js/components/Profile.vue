@@ -21,3 +21,8 @@
         }
     }
 </script>
+<style scoped>
+    body{
+        color:red;
+    }
+</style>

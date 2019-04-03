@@ -131,7 +131,7 @@
               $("#newUser").modal('hide');
               Toast.fire({
                 type: 'success',
-                title: 'Updated User successfully'
+                title: 'Updated User successfully!!!!!!!!'
               });
             }).catch((err)=>console.log(err));
           },
@@ -197,3 +197,6 @@
         }
     }
 </script>
+<style>
+  
+</style>
